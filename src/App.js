@@ -33,11 +33,9 @@ class App extends Component {
         this.setState({
             selectedAsset: selectedOption
         });
-        console.log(`Option selected:`, selectedOption);
     }
 
     handleDateChange = (event) => {
-        console.log(`Date selected:`, event.target.value);
         this.setState({
             startDate: event.target.value
         });
@@ -47,7 +45,6 @@ class App extends Component {
         this.setState({
             monthlyAmount: event.target.value
         });
-        console.log(`monthlyAmount selected:`, event.target.value);
     }
 
     handleInputChange = (input) => {
@@ -72,12 +69,7 @@ class App extends Component {
                 this.setState({
                     options: new_options
                 });
-                console.log(new_options);
             })
-            .catch(function (response) {
-                //handle error
-                console.log(response);
-            });
     }
 
     render() {
