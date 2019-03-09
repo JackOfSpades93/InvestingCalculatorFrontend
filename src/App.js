@@ -21,6 +21,9 @@ class App extends Component {
             monthlyAmount: 100,
             options: [
                 {value: 'AAPL', label: 'Apple Inc.'},
+                {value: 'FB', label: 'Facebook Inc.'},
+                {value: 'AMZN', label: 'Amazon.com Inc.'},
+                {value: 'GOOGL', label: 'Alphabet Inc.'},
                 {value: 'MSFT', label: 'Microsoft Corporation'}
             ]
         }
