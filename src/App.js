@@ -25,8 +25,32 @@ class App extends Component {
                 {value: 'AMZN', label: 'Amazon.com Inc.'},
                 {value: 'GOOGL', label: 'Alphabet Inc.'},
                 {value: 'MSFT', label: 'Microsoft Corporation'}
-            ]
+            ],
+            calculationResult: []
         }
+    }
+
+    componentDidMount() {
+        this.calculateResult()
+    }
+
+    calculateResult = () => {
+        axios({
+            method: 'get',
+            url: api + 'calculate',
+            params: {
+                start: this.state.startDate,
+                ticker: this.state.selectedAsset.value,
+                monthly: this.state.monthlyAmount
+            },
+            config: {headers: {"Access-Control-Allow-Origin": "*"}}
+        })
+            .then(response => {
+                this.setState({
+                        calculationResult: response.data
+                    }
+                )
+            })
     }
 
     handleAssetChange = (selectedOption) => {
@@ -97,7 +121,7 @@ class App extends Component {
                     <FormGroup>
                         <Button
                             variant="primary"
-                            onClick={this.handleClick}>
+                            onClick={this.calculateResult}>
                             Calculate
                         </Button>
                     </FormGroup>
