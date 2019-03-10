@@ -9,6 +9,7 @@ import {FormGroup} from "react-bootstrap";
 import axios from 'axios'
 
 import CanvasJSReact from './canvasjs.react';
+
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 const api = 'http://127.0.0.1:8000/api/';
@@ -110,10 +111,22 @@ class App extends Component {
     }
 
     calculateChartValues() {
+        var totalInvested = [];
+        var portfolioValue = [];
+        this.state.calculationResult.forEach(element => {
+            totalInvested.push({
+                x: new Date(element.date),
+                y: element.total_invested
+            });
+            portfolioValue.push({
+                x: new Date(element.date),
+                y: element.portfolio_value
+            })
+        });
         const options = {
             animationEnabled: true,
             title: {
-                text: "AAPL Investing Results"
+                text: this.state.calculationResult[0].ticker + " Investing Results"
             },
             toolTip: {
                 shared: true
@@ -124,20 +137,7 @@ class App extends Component {
                 showInLegend: true,
                 yValueFormatString: "$#,###",
                 xValueFormatString: "MM/YYYY",
-                dataPoints: [
-                    {x: new Date(2017, 0), y: 2506},
-                    {x: new Date(2017, 1), y: 2798},
-                    {x: new Date(2017, 2), y: 4280},
-                    {x: new Date(2017, 3), y: 3240},
-                    {x: new Date(2017, 4), y: 3526},
-                    {x: new Date(2017, 5), y: 3390},
-                    {x: new Date(2017, 6), y: 4000},
-                    {x: new Date(2017, 7), y: 5250},
-                    {x: new Date(2017, 8), y: 3230},
-                    {x: new Date(2017, 9), y: 4200},
-                    {x: new Date(2017, 10), y: 3716},
-                    {x: new Date(2017, 11), y: 3840}
-                ]
+                dataPoints: totalInvested
             },
                 {
                     type: "spline",
@@ -145,20 +145,7 @@ class App extends Component {
                     showInLegend: true,
                     yValueFormatString: "$#,###",
                     xValueFormatString: "MM/YYYY",
-                    dataPoints: [
-                        {x: new Date(2017, 0), y: 25060},
-                        {x: new Date(2017, 1), y: 27980},
-                        {x: new Date(2017, 2), y: 42800},
-                        {x: new Date(2017, 3), y: 32400},
-                        {x: new Date(2017, 4), y: 35260},
-                        {x: new Date(2017, 5), y: 33900},
-                        {x: new Date(2017, 6), y: 40000},
-                        {x: new Date(2017, 7), y: 52500},
-                        {x: new Date(2017, 8), y: 32300},
-                        {x: new Date(2017, 9), y: 42000},
-                        {x: new Date(2017, 10), y: 37160},
-                        {x: new Date(2017, 11), y: 38400}
-                    ]
+                    dataPoints: portfolioValue
                 }]
         };
         console.log(options);
@@ -166,7 +153,6 @@ class App extends Component {
     }
 
     render() {
-        const options = this.calculateChartValues();
         return (
             <Container>
                 <Form>
@@ -196,7 +182,7 @@ class App extends Component {
                         </Button>
                     </FormGroup>
                 </Form>
-                <CanvasJSChart options={options}/>
+                {this.state.calculationResult.length > 0 && <CanvasJSChart options={this.calculateChartValues()}/>}
                 <Table>
                     <tbody>
                     <tr>
