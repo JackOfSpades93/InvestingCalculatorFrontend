@@ -4,7 +4,6 @@ import Container from 'react-bootstrap/Container'
 import Select from 'react-select';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import Table from 'react-bootstrap/Table'
 import {FormGroup} from "react-bootstrap";
 import axios from 'axios'
 
@@ -101,15 +100,6 @@ class App extends Component {
             })
     }
 
-    renderRow(row) {
-        return (
-            <tr key={row.date}>
-                <td>{row.date}</td>
-                <td>{row.total_invested.toFixed(2)}</td>
-                <td>{row.portfolio_value.toFixed(2)}</td>
-            </tr>)
-    }
-
     calculateChartValues() {
         var totalInvested = [];
         var portfolioValue = [];
@@ -183,16 +173,6 @@ class App extends Component {
                     </FormGroup>
                 </Form>
                 {this.state.calculationResult.length > 0 && <CanvasJSChart options={this.calculateChartValues()}/>}
-                <Table>
-                    <tbody>
-                    <tr>
-                        <th>Date</th>
-                        <th>Total Invested</th>
-                        <th>Portfolio Value</th>
-                    </tr>
-                    {this.state.calculationResult.map(this.renderRow)}
-                    </tbody>
-                </Table>
             </Container>
         );
     }
