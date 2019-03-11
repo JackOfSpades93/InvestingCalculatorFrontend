@@ -147,7 +147,7 @@ class App extends Component {
             <Container>
                 <Form>
                     <FormGroup>
-                        <Form.Label>Choose how much to invest every month</Form.Label>
+                        <Form.Label>Choose a date to start investing</Form.Label>
                         <Form.Control type="date" onChange={this.handleDateChange} value={this.state.startDate}/>
                     </FormGroup>
                     <FormGroup>
@@ -156,7 +156,7 @@ class App extends Component {
                                       value={this.state.monthlyAmount}/>
                     </FormGroup>
                     <FormGroup>
-                        <Form.Label>Choose an asset to invest in</Form.Label>
+                        <Form.Label>Search for an asset to invest in</Form.Label>
                         <Select
                             value={this.state.selectedAsset}
                             onChange={this.handleAssetChange}
