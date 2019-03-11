@@ -4,6 +4,8 @@ import Container from 'react-bootstrap/Container'
 import Select from 'react-select';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal'
+import Image from 'react-bootstrap/Image'
 import {FormGroup} from "react-bootstrap";
 import axios from 'axios'
 
@@ -20,17 +22,18 @@ class App extends Component {
         let startDate = new Date();
         startDate.setFullYear(startDate.getFullYear() - 20);
         this.state = {
-            selectedAsset: {value: 'AAPL', label: 'Apple Inc.'},
+            selectedAsset: {value: 'AAPL', label: 'AAPL | Apple Inc.'},
             startDate: startDate.toISOString().slice(0, 10),
             monthlyAmount: 100,
             options: [
-                {value: 'AAPL', label: 'Apple Inc.'},
-                {value: 'FB', label: 'Facebook Inc.'},
-                {value: 'AMZN', label: 'Amazon.com Inc.'},
-                {value: 'GOOGL', label: 'Alphabet Inc.'},
-                {value: 'MSFT', label: 'Microsoft Corporation'}
+                {value: 'AAPL', label: 'AAPL | Apple Inc.'},
+                {value: 'FB', label: 'FB | Facebook Inc.'},
+                {value: 'AMZN', label: 'AMZN | Amazon.com Inc.'},
+                {value: 'GOOGL', label: 'GOOGL | Alphabet Inc.'},
+                {value: 'MSFT', label: 'MSFT | Microsoft Corporation'}
             ],
-            calculationResult: []
+            calculationResult: [],
+            showDialog: false
         }
     }
 
@@ -39,6 +42,9 @@ class App extends Component {
     }
 
     calculateResult = () => {
+        this.setState({
+            showDialog: true
+        });
         axios({
             method: 'get',
             url: api + 'calculate',
@@ -55,6 +61,15 @@ class App extends Component {
                     }
                 )
             })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+            .then(() => {
+                this.setState({
+                    showDialog: false
+                });
+            });
     }
 
     handleAssetChange = (selectedOption) => {
@@ -173,6 +188,12 @@ class App extends Component {
                     </FormGroup>
                 </Form>
                 {this.state.calculationResult.length > 0 && <CanvasJSChart options={this.calculateChartValues()}/>}
+                <Modal show={this.state.showDialog}>
+                    <Modal.Body style={{textAlign: "center"}}>
+                        <p>Fetching data and calculating.</p>
+                        <Image src="bubbles.svg" width="128" height="128" alt=""/>
+                    </Modal.Body>
+                </Modal>
             </Container>
         );
     }
